@@ -4,6 +4,11 @@ Este arquivo serve como um registro de todas as modificações realizadas no pro
 
 ## Histórico de Modificações
 
+### 22/04/2026 - Adição da Agenda ao Sidebar
+- **Objetivo**: Adicionar o link da "Agenda" como o primeiro item do menu lateral.
+- **Link**: [Agenda](https://pedroliang.github.io/Centralux-Agenda/)
+- **Mudanças**: Adicionado item de navegação no `index.html`, definido como item ativo inicial e atualizado o `iframe` padrão.
+
 ### 27/03/2026 - Restauração da Planilha Geral
 - **Objetivo**: Retornar o link da "Planilha Geral" ao sidebar com uma nova URL.
 - **Link**: [Planilha Geral](https://docs.google.com/spreadsheets/d/1fRqUo8vH4awjCwV12U0fhR2bdBSRGFUVMlU8PozUsoQ/edit?gid=0#gid=0)
