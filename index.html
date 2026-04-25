@@ -177,36 +177,20 @@
 
     <!-- Update Credentials Overlay -->
     <div id="update-overlay" class="auth-overlay hidden">
-        <div class="auth-card wide">
+        <div class="auth-card">
             <div class="auth-header">
                 <i class="fas fa-user-shield"></i>
                 <h2>Primeiro Acesso</h2>
-                <p>Atualize as credenciais de ambos os usuários</p>
+                <p id="update-msg">Atualize suas credenciais de acesso</p>
             </div>
             <form id="update-form">
-                <div class="update-grid">
-                    <div class="user-update-section">
-                        <h3>Usuário 1 (Givaldo)</h3>
-                        <div class="input-group">
-                            <label>Novo Login</label>
-                            <input type="text" id="new-user1" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Nova Senha</label>
-                            <input type="password" id="new-pass1" required>
-                        </div>
-                    </div>
-                    <div class="user-update-section">
-                        <h3>Usuário 2 (BrShrek)</h3>
-                        <div class="input-group">
-                            <label>Novo Login</label>
-                            <input type="text" id="new-user2" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Nova Senha</label>
-                            <input type="password" id="new-pass2" required>
-                        </div>
-                    </div>
+                <div class="input-group">
+                    <label>Novo Login</label>
+                    <input type="text" id="new-user" required>
+                </div>
+                <div class="input-group">
+                    <label>Nova Senha</label>
+                    <input type="password" id="new-pass" required>
                 </div>
                 <button type="submit" class="auth-btn">Salvar Alterações</button>
             </form>

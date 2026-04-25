@@ -13,20 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const updateForm = document.getElementById('update-form');
     const loginError = document.getElementById('login-error');
+    const updateMsg = document.getElementById('update-msg');
 
     const DEFAULT_USERS = [
-        { login: 'givaldo', pass: 'giva01' },
-        { login: 'brshrek', pass: 'Jesus321*!' }
+        { login: 'givaldo', pass: 'giva01', firstAccess: true },
+        { login: 'brshrek', pass: 'Jesus321*', firstAccess: true } // Corrigido: Jesus321*! (User said Jesus321*! but input was Jesus321*)
     ];
 
-    // Inicializa usuários no localStorage se não existirem
+    // Note: The user said Jesus321*!, let me double check the previous prompt.
+    // Login: givaldo, Senha: giva01
+    // Login: brshrek, Senha: Jesus321*!
+
+    // Re-initializing with correct defaults if needed
     if (!localStorage.getItem('auth_users')) {
-        localStorage.setItem('auth_users', JSON.stringify(DEFAULT_USERS));
-        localStorage.setItem('first_access', 'true');
+        localStorage.setItem('auth_users', JSON.stringify([
+            { login: 'givaldo', pass: 'giva01', firstAccess: true },
+            { login: 'brshrek', pass: 'Jesus321*!', firstAccess: true }
+        ]));
     }
 
+    let authenticatedUserIndex = -1;
+
     const getUsers = () => JSON.parse(localStorage.getItem('auth_users'));
-    const isFirstAccess = () => localStorage.getItem('first_access') === 'true';
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -34,13 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const passVal = document.getElementById('login-pass').value;
         const users = getUsers();
 
-        const authenticatedUser = users.find(u => u.login === userVal && u.pass === passVal);
+        authenticatedUserIndex = users.findIndex(u => u.login === userVal && u.pass === passVal);
 
-        if (authenticatedUser) {
+        if (authenticatedUserIndex !== -1) {
+            const user = users[authenticatedUserIndex];
             loginError.style.display = 'none';
-            if (isFirstAccess()) {
+            
+            if (user.firstAccess) {
                 loginOverlay.classList.add('hidden');
                 updateOverlay.classList.remove('hidden');
+                updateMsg.textContent = `Olá ${user.login}, atualize seu acesso para continuar.`;
+                document.getElementById('new-user').value = user.login;
             } else {
                 loginOverlay.classList.add('hidden');
             }
@@ -51,18 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const newUser1 = document.getElementById('new-user1').value;
-        const newPass1 = document.getElementById('new-pass1').value;
-        const newUser2 = document.getElementById('new-user2').value;
-        const newPass2 = document.getElementById('new-pass2').value;
+        const newUser = document.getElementById('new-user').value;
+        const newPass = document.getElementById('new-pass').value;
+        const users = getUsers();
 
-        const newUsers = [
-            { login: newUser1, pass: newPass1 },
-            { login: newUser2, pass: newPass2 }
-        ];
+        users[authenticatedUserIndex] = {
+            login: newUser,
+            pass: newPass,
+            firstAccess: false
+        };
 
-        localStorage.setItem('auth_users', JSON.stringify(newUsers));
-        localStorage.setItem('first_access', 'false');
+        localStorage.setItem('auth_users', JSON.stringify(users));
         updateOverlay.classList.add('hidden');
     });
 
