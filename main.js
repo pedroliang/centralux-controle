@@ -14,15 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateForm = document.getElementById('update-form');
     const loginError = document.getElementById('login-error');
     const updateMsg = document.getElementById('update-msg');
-
-    const DEFAULT_USERS = [
-        { login: 'givaldo', pass: 'giva01', firstAccess: true },
-        { login: 'brshrek', pass: 'Jesus321*', firstAccess: true } // Corrigido: Jesus321*! (User said Jesus321*! but input was Jesus321*)
-    ];
-
-    // Note: The user said Jesus321*!, let me double check the previous prompt.
-    // Login: givaldo, Senha: giva01
-    // Login: brshrek, Senha: Jesus321*!
+    const userProfile = document.getElementById('user-profile');
+    const loggedUserName = document.getElementById('logged-user-name');
+    const logoutBtn = document.getElementById('logout-btn');
 
     // Re-initializing with correct defaults if needed
     if (!localStorage.getItem('auth_users')) {
@@ -35,6 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let authenticatedUserIndex = -1;
 
     const getUsers = () => JSON.parse(localStorage.getItem('auth_users'));
+    
+    const updateAuthUI = () => {
+        const loggedUser = localStorage.getItem('logged_user');
+        if (loggedUser) {
+            loginOverlay.classList.add('hidden');
+            userProfile.classList.remove('hidden');
+            loggedUserName.textContent = loggedUser;
+        } else {
+            loginOverlay.classList.remove('hidden');
+            userProfile.classList.add('hidden');
+        }
+    };
+
+    // Inicializa UI de Autenticação
+    updateAuthUI();
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -54,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateMsg.textContent = `Olá ${user.login}, atualize seu acesso para continuar.`;
                 document.getElementById('new-user').value = user.login;
             } else {
-                loginOverlay.classList.add('hidden');
+                localStorage.setItem('logged_user', user.login);
+                updateAuthUI();
             }
         } else {
             loginError.style.display = 'block';
@@ -74,7 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         localStorage.setItem('auth_users', JSON.stringify(users));
+        localStorage.setItem('logged_user', newUser);
         updateOverlay.classList.add('hidden');
+        updateAuthUI();
+    });
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('logged_user');
+        updateAuthUI();
+        // Opcional: Recarregar a página para limpar estados do iframe
+        // location.reload();
     });
 
     // Controles de Zoom
