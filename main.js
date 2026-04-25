@@ -7,6 +7,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');
     
+    // --- Lógica de Autenticação ---
+    const loginOverlay = document.getElementById('login-overlay');
+    const updateOverlay = document.getElementById('update-overlay');
+    const loginForm = document.getElementById('login-form');
+    const updateForm = document.getElementById('update-form');
+    const loginError = document.getElementById('login-error');
+
+    const DEFAULT_USERS = [
+        { login: 'givaldo', pass: 'giva01' },
+        { login: 'brshrek', pass: 'Jesus321*!' }
+    ];
+
+    // Inicializa usuários no localStorage se não existirem
+    if (!localStorage.getItem('auth_users')) {
+        localStorage.setItem('auth_users', JSON.stringify(DEFAULT_USERS));
+        localStorage.setItem('first_access', 'true');
+    }
+
+    const getUsers = () => JSON.parse(localStorage.getItem('auth_users'));
+    const isFirstAccess = () => localStorage.getItem('first_access') === 'true';
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userVal = document.getElementById('login-user').value;
+        const passVal = document.getElementById('login-pass').value;
+        const users = getUsers();
+
+        const authenticatedUser = users.find(u => u.login === userVal && u.pass === passVal);
+
+        if (authenticatedUser) {
+            loginError.style.display = 'none';
+            if (isFirstAccess()) {
+                loginOverlay.classList.add('hidden');
+                updateOverlay.classList.remove('hidden');
+            } else {
+                loginOverlay.classList.add('hidden');
+            }
+        } else {
+            loginError.style.display = 'block';
+        }
+    });
+
+    updateForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newUser1 = document.getElementById('new-user1').value;
+        const newPass1 = document.getElementById('new-pass1').value;
+        const newUser2 = document.getElementById('new-user2').value;
+        const newPass2 = document.getElementById('new-pass2').value;
+
+        const newUsers = [
+            { login: newUser1, pass: newPass1 },
+            { login: newUser2, pass: newPass2 }
+        ];
+
+        localStorage.setItem('auth_users', JSON.stringify(newUsers));
+        localStorage.setItem('first_access', 'false');
+        updateOverlay.classList.add('hidden');
+    });
+
     // Controles de Zoom
     const zoomInBtn = document.getElementById('zoom-in');
     const zoomOutBtn = document.getElementById('zoom-out');
