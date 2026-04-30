@@ -104,9 +104,26 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentZoom = 1;
 
-    // Toggle Sidebar
+    // Toggle Sidebar com Persistência
+    const saveSidebarState = (isCollapsed) => {
+        localStorage.setItem('sidebar_collapsed', isCollapsed);
+    };
+
+    const loadSidebarState = () => {
+        const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+        }
+    };
+
+    // Inicializa estado do sidebar
+    loadSidebarState();
+
     sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
+        const isCollapsed = sidebar.classList.toggle('collapsed');
+        saveSidebarState(isCollapsed);
     });
 
     // Navegação entre sites (Otimizada)
