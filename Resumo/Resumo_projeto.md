@@ -4,6 +4,10 @@ Este arquivo serve como um registro de todas as modificações realizadas no pro
 
 ## Histórico de Modificações
 
+### 12/05/2026 - Remoção da Agenda do Sidebar
+- **Objetivo**: Remover o link da "Agenda" da barra lateral conforme solicitação.
+- **Mudanças**: Removido o item de navegação no `index.html`, definido "Estoque" como item ativo inicial e atualizado o `iframe` padrão.
+
 ### 22/04/2026 - Adição da Agenda ao Sidebar
 - **Objetivo**: Adicionar o link da "Agenda" como o primeiro item do menu lateral.
 - **Link**: [Agenda](https://pedroliang.github.io/Centralux-Agenda/)
